@@ -3,7 +3,6 @@ package top.lmqstudy.org.domain;
 
 import lombok.Data;
 import top.lmqstudy.basic.domain.BaseDomain;
-
 import java.util.Date;
 
 @Data
