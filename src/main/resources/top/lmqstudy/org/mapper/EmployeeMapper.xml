@@ -1,0 +1,82 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="top.lmqstudy.org.mapper.EmployeeMapper">
+
+<!--    添加数据-->
+<!--    void save(Employee d);-->
+    <insert id="save" >
+        INSERT INTO t_employee(username, email, phone, salt, password, age, state, department_id, logininfo_id, shop_id)
+        VALUES (#{username},#{email},#{phone},#{salt},#{password},#{age},#{state},#{department.id},#{logininfo_id},#{shop_id})
+    </insert>
+
+<!--     删除数据-->
+<!--    void remove(Long id);-->
+    <delete id="remove" parameterType="long">
+        DELETE FROM t_employee WHERE id = #{id}
+    </delete>
+
+<!--    修改数据-->
+<!--    void update(Employee d);-->
+    <update id="update">
+        UPDATE t_employee SET username=#{username},email=#{email},phone=#{phone},salt=#{salt},password=#{password},age=#{age},state=#{state},department_id=#{department.id},logininfo_id=#{logininfo_id},shop_id=#{shop_id} WHERE id = #{id}
+    </update>
+
+<!--    通过id查找数据-->
+<!--    Employee loadById(Long id );-->
+    <select id="loadById" resultType="Employee">
+        SELECT * FROM t_employee WHERE id=#{id}
+    </select>
+
+<!--    查询所有数据-->
+<!--    List<Employee> loadAll();-->
+    <select id="loadAll" resultType="Employee">
+        SELECT * from t_employee
+    </select>
+
+<!--    查询总条数-->
+<!--    Long queryCount(EmployeeQuery query);-->
+    <select id="queryCount" resultType="long">
+        SELECT count(*) from t_employee e
+        <include refid="condition"/>
+    </select>
+
+<!--    查询当前的页数-->
+<!--    List<Employee> queryData(EmployeeQuery query);-->
+    <select id="queryData" resultMap="EmployeeMap">
+        SELECT e.*,d.id did,d.name dname FROM t_employee e
+        left join t_department d on d.id = e.department_id
+        <include refid="condition"/>
+        LIMIT #{start},#{pageSize}
+    </select>
+
+
+    <resultMap id="EmployeeMap" type="Employee">
+        <id column="id" property="id"/>
+        <result column="username" property="username"/>
+        <result column="email" property="email"/>
+        <result column="phone" property="phone"/>
+        <result column="password" property="password"/>
+        <result column="age" property="age"/>
+        <result column="state" property="state"/>
+        <association property="department" javaType="Department">
+            <id column="did" property="id"/>
+            <result column="dname" property="name"/>
+        </association>
+    </resultMap>
+
+    <sql id="condition">
+        <where>
+            <if test="keyWord != null and keyWord != ''">
+                and (e.username like concat("%",#{keyWord},"%") or e.email like concat("%",#{keyWord},"%"))
+            </if>
+        </where>
+    </sql>
+
+<!--void patchDelete(@Param("ids") List<Long> ids);-->
+    <delete id="patchDelete" >
+        delete from t_Employee where id in
+        <foreach collection="ids" separator="," open="(" close=")" item="id">
+            #{id}
+        </foreach>
+    </delete>
+</mapper>

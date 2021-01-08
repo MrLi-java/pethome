@@ -1,0 +1,15 @@
+server:
+  port: 8080
+spring:
+  datasource:
+    driver-class-name: com.mysql.cj.jdbc.Driver
+    username: root
+    password: lmq981226
+    url: jdbc:mysql://localhost:3306/pethome?serverTimezone=Asia/Shanghai
+mybatis:
+  type-aliases-package: top.lmqstudy.org.domain,top.lmqstudy.org.query,
+                        top.lmqstudy.order.domain,top.lmqstudy.order.query
+logging:
+  level:
+    top:
+      lmqstudy: trace

@@ -1,0 +1,100 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="top.lmqstudy.org.mapper.DepartmentMapper">
+
+<!--    添加数据-->
+<!--    void save(Department d);-->
+    <insert id="save" parameterType="Department" useGeneratedKeys="true" keyColumn="id" keyProperty="id">
+        INSERT INTO t_department(sn, name, dirPath, state, manager_id, parent_id)
+        VALUES (#{sn}, #{name}, #{dirPath}, #{state}, #{manager.id}, #{parent.id})
+    </insert>
+
+<!--     删除数据-->
+<!--    void remove(Long id);-->
+    <delete id="remove" parameterType="long">
+        DELETE FROM t_department WHERE id = #{id}
+    </delete>
+
+<!--    修改数据-->
+<!--    void update(Department d);-->
+    <update id="update">
+        UPDATE t_department SET name=#{name},sn=#{sn},dirPath=#{dirPath},state=#{state},manager_id=#{manager.id},parent_id=#{parent.id} WHERE id = #{id}
+    </update>
+
+<!--    通过id查找数据-->
+<!--    Department loadById(Long id );-->
+    <select id="loadById" resultType="Department">
+        SELECT * FROM t_department WHERE id=#{id}
+    </select>
+
+<!--    查询所有数据-->
+<!--    List<Department> loadAll();-->
+    <select id="loadAll" resultType="Department">
+        SELECT * from t_department
+    </select>
+
+<!--    查询总条数-->
+<!--    Long queryCount(DepartmentQuery query);-->
+    <select id="queryCount" resultType="long">
+        SELECT count(*) from t_department d
+        <include refid="condition"/>
+    </select>
+
+<!--    查询当前的页数-->
+<!--    List<Department> queryData(DepartmentQuery query);-->
+    <select id="queryData" resultMap="DepartmentMap">
+        SELECT d.*,p.id pid,p.name pname,e.id eid,e.username ename FROM t_department d
+        left join t_department p on d.parent_id = p.id
+        left join t_employee e on d.manager_id = e.id
+        <include refid="condition"/>
+        LIMIT #{start},#{pageSize}
+    </select>
+
+
+    <resultMap id="DepartmentMap" type="Department">
+        <id column="id" property="id"/>
+        <result column="sn" property="sn"/>
+        <result column="name" property="name"/>
+        <result column="dirPath" property="dirPath"/>
+        <result column="state" property="state"/>
+        <association property="parent" javaType="Department">
+            <id column="pid" property="id"/>
+            <result column="pname" property="name"/>
+        </association>
+        <association property="manager" javaType="Employee">
+            <id column="eid" property="id"/>
+            <result column="ename" property="username"/>
+        </association>
+    </resultMap>
+
+    <sql id="condition">
+        <where>
+            <if test="keyWord != null and keyWord != ''">
+                and (d.sn like concat("%",#{keyWord},"%") or d.name like concat("%",#{keyWord},"%"))
+            </if>
+        </where>
+    </sql>
+
+<!--void patchDelete(@Param("ids") List<Long> ids);-->
+    <delete id="patchDelete" >
+        delete from t_department where id in
+        <foreach collection="ids" separator="," open="(" close=")" item="id">
+            #{id}
+        </foreach>
+    </delete>
+
+<!--    List<Department> getDeptTree();-->
+    <select id="getDeptTree" resultMap="DeptTreeMap">
+        select p.id pid,p.name pname,s.id sid,s.name sname from t_department p
+        left join t_department s on s.parent_id = p.id
+        where p.parent_id is null
+    </select>
+    <resultMap id="DeptTreeMap" type="Department">
+        <id column="pid" property="id"/>
+        <result column="pname" property="name"/>
+        <collection property="children" ofType="Department">
+            <id column="sid" property="id"/>
+            <result column="sname" property="name"/>
+        </collection>
+    </resultMap>
+</mapper>
