@@ -42,27 +42,12 @@
 
 <!--    查询当前的页数-->
 <!--    List<Shop> queryData(ShopQuery query);-->
-    <select id="queryData" resultMap="ShopMap">
-        SELECT e.*,d.id did,d.name dname FROM t_employee e
-        left join t_department d on d.id = e.department_id
+    <select id="queryData" resultType="Shop">
+        SELECT s.* FROM t_shop s
         <include refid="condition"/>
         LIMIT #{start},#{pageSize}
     </select>
 
-
-    <resultMap id="ShopMap" type="Shop">
-        <id column="id" property="id"/>
-        <result column="username" property="username"/>
-        <result column="email" property="email"/>
-        <result column="phone" property="phone"/>
-        <result column="password" property="password"/>
-        <result column="age" property="age"/>
-        <result column="state" property="state"/>
-        <association property="department" javaType="Department">
-            <id column="did" property="id"/>
-            <result column="dname" property="name"/>
-        </association>
-    </resultMap>
 
     <sql id="condition">
         <where>

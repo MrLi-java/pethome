@@ -18,7 +18,7 @@ public class Employee extends BaseDomain {
   private Integer state;
   private Department department;
   private Long logininfo_id;
-  private Long shop_id;
+  private Shop shop;
 
 
 

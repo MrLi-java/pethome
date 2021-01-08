@@ -1,6 +1,7 @@
 package top.lmqstudy.org.domain;
 
 
+import com.fasterxml.jackson.annotation.JsonFormat;
 import lombok.Data;
 import top.lmqstudy.basic.domain.BaseDomain;
 import java.util.Date;
@@ -15,7 +16,10 @@ public class Shop  extends BaseDomain {
   private Integer state;
   private String address;
   private String logo;
-  private Long adminId;
+  private Long admin_id;
 
-
+  @JsonFormat(pattern="yyyy-MM-dd HH:mm:ss",timezone="GMT+8")
+  public Date getRegisterTime() {
+    return registerTime;
+  }
 }
