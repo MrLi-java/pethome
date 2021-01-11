@@ -20,4 +20,10 @@ public class AjaxResult {
         this.msg = msg;
         return this;
     }
+
+    public AjaxResult setSuccess(boolean success){
+        this.success = true;
+        return this;
+    }
+
 }
