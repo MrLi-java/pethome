@@ -5,10 +5,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.util.StringUtils;
 import top.lmqstudy.basic.contant.Contant;
 import top.lmqstudy.basic.service.impl.BaseServiceImpl;
-import top.lmqstudy.basic.util.AjaxResult;
-import top.lmqstudy.basic.util.RedisUtils;
-import top.lmqstudy.basic.util.SmsUtils;
-import top.lmqstudy.basic.util.StrUtils;
+import top.lmqstudy.basic.util.*;
 import top.lmqstudy.user.domain.User;
 import top.lmqstudy.user.domain.dto.UserDto;
 import top.lmqstudy.user.mapper.UserMapper;
@@ -78,14 +75,16 @@ public class UserServiceImpl extends BaseServiceImpl<User> implements IUserServi
                 //5分钟以内提示将以前的验证码重新存入Redis
                 RedisUtils.INSTANCE.set(type + "-" + phone, verifyCode+"-"+currentTime, 300);
                 String content = "您注册账户的验证码为："+verifyCode+"，请您在5分钟之内输入！";
-                SmsUtils.send(phone,content);
+                //sms短信平台接口
+                //SmsUtils.send(phone,content);
                 System.out.println(content);
             }
         }else {
             //当大于5分钟或者第一次输入
             RedisUtils.INSTANCE.set(type + "-" + phone, verifyCode+"-"+currentTime, 300);
             String content = "您注册账户的验证码为："+verifyCode+"，请您在5分钟之内输入！";
-            SmsUtils.send(phone,content);
+            //sms短信平台接口
+            //SmsUtils.send(phone,content);
             System.out.println(content);
         }
         return new AjaxResult().setMsg("验证码已发送，请在5分钟之内输入！").setSuccess(true);
@@ -107,6 +106,7 @@ public class UserServiceImpl extends BaseServiceImpl<User> implements IUserServi
                 if(verifyCode.equals(userDto.getVerifyCode())){
                     userDto.setUsername(userDto.getPassword());
                     userDto.setSalt(StrUtils.getComplexRandomString(32));
+                    userDto.setPassword(MD5Utils.encrypByMd5(userDto.getPassword()+userDto.getSalt()));
                     userMapper.save(userDto);
                     return AjaxResult.me();
                 }

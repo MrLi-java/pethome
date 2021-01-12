@@ -9,7 +9,8 @@ spring:
 mybatis:
   type-aliases-package: top.lmqstudy.org.domain,top.lmqstudy.org.query,
                         top.lmqstudy.order.domain,top.lmqstudy.order.query,
-                        top.lmqstudy.user.domain,top.lmqstudy.user.query
+                        top.lmqstudy.user.domain,top.lmqstudy.user.query,
+                        top.lmqstudy.basic.domain,top.lmqstudy.basic.query
 logging:
   level:
     top:

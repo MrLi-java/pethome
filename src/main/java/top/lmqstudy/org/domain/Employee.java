@@ -15,10 +15,12 @@ public class Employee extends BaseDomain {
   private String salt;
   private String password;
   private Integer age;
-  private Integer state;
+  private Integer state = 1;
   private Department department;
+  private Long department_id;
   private Long logininfo_id;
   private Shop shop;
+  private Long shop_id;
 
 
 

@@ -4,9 +4,9 @@
 
 <!--    添加数据-->
 <!--    void save(Employee d);-->
-    <insert id="save" >
+    <insert id="save" useGeneratedKeys="true" keyColumn="id" keyProperty="id" >
         INSERT INTO t_employee(username, email, phone, salt, password, age, state, department_id, logininfo_id, shop_id)
-        VALUES (#{username},#{email},#{phone},#{salt},#{password},#{age},#{state},#{department.id},#{logininfo_id},#{shop.id})
+        VALUES (#{username},#{email},#{phone},#{salt},#{password},#{age},#{state},#{department_id},#{logininfo_id},#{shop_id})
     </insert>
 
 <!--     删除数据-->
@@ -18,7 +18,7 @@
 <!--    修改数据-->
 <!--    void update(Employee d);-->
     <update id="update">
-        UPDATE t_employee SET username=#{username},email=#{email},phone=#{phone},salt=#{salt},password=#{password},age=#{age},state=#{state},department_id=#{department.id},logininfo_id=#{logininfo_id},shop_id=#{shop.id} WHERE id = #{id}
+        UPDATE t_employee SET username=#{username},email=#{email},phone=#{phone},salt=#{salt},password=#{password},age=#{age},state=#{state},department_id=#{department.id},logininfo_id=#{logininfo_id},shop_id=#{shop_id} WHERE id = #{id}
     </update>
 
 <!--    通过id查找数据-->

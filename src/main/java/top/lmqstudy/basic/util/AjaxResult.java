@@ -10,6 +10,7 @@ import lombok.NoArgsConstructor;
 public class AjaxResult {
     private boolean success = true;
     private String msg = "操作成功！";
+    private Object data;
 
     public static AjaxResult me(){
         return new AjaxResult();
@@ -23,6 +24,11 @@ public class AjaxResult {
 
     public AjaxResult setSuccess(boolean success){
         this.success = true;
+        return this;
+    }
+
+    public AjaxResult setData(Object data){
+        this.data=data;
         return this;
     }
 

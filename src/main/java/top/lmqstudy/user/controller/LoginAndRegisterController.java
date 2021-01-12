@@ -3,6 +3,8 @@ package top.lmqstudy.user.controller;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 import top.lmqstudy.basic.util.AjaxResult;
+import top.lmqstudy.org.domain.Shop;
+import top.lmqstudy.org.service.IShopService;
 import top.lmqstudy.user.domain.dto.UserDto;
 import top.lmqstudy.user.service.IUserService;
 
@@ -18,6 +20,9 @@ import top.lmqstudy.user.service.IUserService;
 public class LoginAndRegisterController {
     @Autowired
     private IUserService userService;
+
+    @Autowired
+    private IShopService shopService;
 
     /**
      * @Author Mr.Li
@@ -54,5 +59,18 @@ public class LoginAndRegisterController {
     @PutMapping("/phoneReg")
     public AjaxResult phoneReg(@RequestBody UserDto userDto){
         return userService.phoneReg(userDto);
+    }
+
+
+    /**
+     * @Author Mr.Li
+     * @Description 商家入驻
+     * @Date 2021/1/12 20:29
+     * @Param [shop]
+     * @return top.lmqstudy.basic.util.AjaxResult
+     **/
+    @PostMapping("/settledIn")
+    public AjaxResult settledIn(@RequestBody Shop shop){
+        return shopService.settledIn(shop);
     }
 }
