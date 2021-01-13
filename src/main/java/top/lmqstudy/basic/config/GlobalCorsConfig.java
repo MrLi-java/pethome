@@ -19,6 +19,8 @@ public class GlobalCorsConfig {
         config.addAllowedOrigin("http://localhost:80");
         config.addAllowedOrigin("http://127.0.0.1");
         config.addAllowedOrigin("http://localhost");
+        config.addAllowedOrigin("http://172.16.80.252:8081");
+        config.addAllowedOrigin("http://172.16.80.252:8080");
 
 
         //2) 是否发送Cookie信息

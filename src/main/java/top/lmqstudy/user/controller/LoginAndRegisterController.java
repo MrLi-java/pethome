@@ -8,6 +8,10 @@ import top.lmqstudy.org.service.IShopService;
 import top.lmqstudy.user.domain.dto.UserDto;
 import top.lmqstudy.user.service.IUserService;
 
+import javax.servlet.http.HttpServletResponse;
+import java.io.IOException;
+import java.io.PrintWriter;
+
 /**
  * Created with IntelliJ IDEA.
  *
@@ -71,6 +75,27 @@ public class LoginAndRegisterController {
      **/
     @PostMapping("/settledIn")
     public AjaxResult settledIn(@RequestBody Shop shop){
-        return shopService.settledIn(shop);
+        try {
+            return shopService.settledIn(shop);
+        } catch (Exception e) {
+            e.printStackTrace();
+            return AjaxResult.me().setMsg("入驻失败，我们正在殴打程序猿！"+e.getMessage());
+        }
+    }
+
+
+    /**
+     * @Author Mr.Li
+     * @Description 商家激活
+     * @Date 2021/1/13 10:34
+     * @Param [id]
+     * @return void
+     **/
+    @GetMapping("/shopRegActive/{id}")
+    public void shopRegActive(@PathVariable("id")Long id, HttpServletResponse response) throws IOException {
+        shopService.shopRegActive(id);
+        response.setContentType("text/html;charset=utf-8");
+        PrintWriter writer = response.getWriter();
+        writer.write("<h1>Congratulations on your admission to Pet Home!!!!!!</h1>");
     }
 }

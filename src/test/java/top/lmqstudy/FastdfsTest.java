@@ -14,7 +14,7 @@ public class FastdfsTest {
 
     @Test
     public void test(){
-        String filePath = FastDfsUtils.upload("C:/Users/32089/Desktop/1.jpg", "jpg");
-        System.out.println(filePath);
+//        String filePath = FastDfsUtils.upload("C:/Users/32089/Desktop/1.jpg", "jpg");
+//        System.out.println(filePath);
     }
 }
