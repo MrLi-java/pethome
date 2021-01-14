@@ -41,4 +41,14 @@ public interface IUserService extends IBaseService<User> {
      * @return top.lmqstudy.basic.util.AjaxResult
      **/
     AjaxResult phoneReg(UserDto userDto);
+
+
+    /**
+     * @Author Mr.Li
+     * @Description 前台用户登录
+     * @Date 2021/1/14 15:01
+     * @Param [userDto]
+     * @return top.lmqstudy.basic.util.AjaxResult
+     **/
+    AjaxResult userLogin(UserDto userDto);
 }

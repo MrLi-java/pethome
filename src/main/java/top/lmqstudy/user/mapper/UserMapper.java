@@ -20,4 +20,13 @@ public interface UserMapper extends BaseMapper<User> {
      * @return top.lmqstudy.user.domain.User
      **/
     User findByPhone(String phone);
+
+    /**
+     * @Author Mr.Li
+     * @Description 根据用户的邮箱，电话，用户名查找用户
+     * @Date 2021/1/14 15:49
+     * @Param [username]
+     * @return void
+     **/
+    User findByAccount(String username);
 }

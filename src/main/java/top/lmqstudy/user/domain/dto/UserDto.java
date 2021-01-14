@@ -15,4 +15,6 @@ import top.lmqstudy.user.domain.User;
 public class UserDto extends User {
     private String verifyCode;
     private String type;
+
+    private boolean rememberMe;
 }

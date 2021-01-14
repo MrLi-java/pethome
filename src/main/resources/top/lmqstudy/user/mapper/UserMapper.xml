@@ -4,9 +4,16 @@
     <select id="findByPhone" resultType="top.lmqstudy.user.domain.User" parameterType="String">
         select * from t_user where phone = #{phone}
     </select>
+    <select id="findByAccount" resultType="User">
+        select * from t_user where username=#{username} or phone=#{username} or email=#{username}
+    </select>
 
     <insert id="save">
         INSERT INTO t_user(username, email, phone, salt, password, state, age, createtime, headImg, logininfo_id) VALUES
         (#{username},#{email},#{phone},#{salt},#{password},#{state},#{age},#{createtime},#{headImg},#{logininfo_id})
     </insert>
+
+    <update id="update">
+        update t_user set username=#{username},email=#{email},phone=#{phone},salt=#{salt},password=#{password},state=#{state},age=#{age},headImg=#{headImg},logininfo_id=#{logininfo_id} where id = #{id}
+    </update>
 </mapper>

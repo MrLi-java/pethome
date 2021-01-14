@@ -98,4 +98,16 @@ public class LoginAndRegisterController {
         PrintWriter writer = response.getWriter();
         writer.write("<h1>Congratulations on your admission to Pet Home!!!!!!</h1>");
     }
+
+    /**
+     * @Author Mr.Li
+     * @Description 前台用户账户登录
+     * @Date 2021/1/14 14:04
+     * @Param [userDto]
+     * @return top.lmqstudy.basic.util.AjaxResult
+     **/
+    @PostMapping("/userLogin")
+    public AjaxResult userLogin(@RequestBody UserDto userDto){
+        return userService.userLogin(userDto);
+    }
 }

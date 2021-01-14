@@ -11,6 +11,10 @@ import top.lmqstudy.user.domain.dto.UserDto;
 import top.lmqstudy.user.mapper.UserMapper;
 import top.lmqstudy.user.service.IUserService;
 
+import java.util.HashMap;
+import java.util.Map;
+import java.util.UUID;
+
 /**
  * Created with IntelliJ IDEA.
  *
@@ -116,5 +120,45 @@ public class UserServiceImpl extends BaseServiceImpl<User> implements IUserServi
             return AjaxResult.me();
         }
         return AjaxResult.me().setMsg("登录失败，我们已经将程序员干掉祭天了！");
+    }
+
+    /**
+     * @Author Mr.Li
+     * @Description 前台和后台用户登录
+     * @Date 2021/1/14 15:47
+     * @Param [userDto]
+     * @return top.lmqstudy.basic.util.AjaxResult
+     **/
+    @Override
+    public AjaxResult userLogin(UserDto userDto) {
+        //前台用户账户登录
+        if(Contant.FRONT.equals(userDto.getType())){
+            //通过账户查找用户
+            User loginUser = userMapper.findByAccount(userDto.getUsername());
+            if(loginUser!=null){
+                //账户存在判断密码是否一样（传入的密码进行加密处理）
+                if(loginUser.getPassword().equals(MD5Utils.encrypByMd5(userDto.getPassword()+loginUser.getSalt()))){
+                    //将密码设为空，避免被破译
+                    loginUser.setPassword(null);
+                    //利用UUID生成一个userToken
+                    String userToken = UUID.randomUUID().toString();
+                    //将loginUser对象转换为json字符串
+                    String userJsonStr = JsonUtils.toJsonStr(loginUser);
+                    //将数据存入Redis
+                    RedisUtils.INSTANCE.set(userToken,userJsonStr,Contant.EXPIRE_TIME_IN_REDIS);
+                    //将userToken和userJsonStr存入map集合
+                    Map<String,Object> map = new HashMap<>();
+                    map.put("userToken",userToken);
+                    map.put("loginUser",userJsonStr);
+                    //将map集合存入AjaxResult的data中返回给前端
+                    return AjaxResult.me().setData(map);
+                }
+                return AjaxResult.me().setMsg("密码错误！");
+            }
+            return AjaxResult.me().setMsg("您的账户不存在！");
+        }else if(Contant.ADMIN.equals(userDto.getType())){
+            return null;
+        }
+        return null;
     }
 }
