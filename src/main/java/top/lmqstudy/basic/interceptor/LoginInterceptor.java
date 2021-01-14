@@ -22,6 +22,7 @@ import javax.servlet.http.HttpServletResponse;
 public class LoginInterceptor implements HandlerInterceptor {
     @Override
     public boolean preHandle(HttpServletRequest request, HttpServletResponse response, Object handler) throws Exception {
+        System.out.println(request.getRequestURI());
         //获取userLoken消息头
         String userToken = request.getHeader("userToken");
         //判断userLoken是否为空

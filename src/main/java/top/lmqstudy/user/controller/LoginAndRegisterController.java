@@ -3,6 +3,7 @@ package top.lmqstudy.user.controller;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 import top.lmqstudy.basic.util.AjaxResult;
+import top.lmqstudy.org.domain.Employee;
 import top.lmqstudy.org.domain.Shop;
 import top.lmqstudy.org.service.IShopService;
 import top.lmqstudy.user.domain.dto.UserDto;
@@ -50,7 +51,12 @@ public class LoginAndRegisterController {
      **/
     @GetMapping("/sendMobileCode/{type}/{phone}")
     public AjaxResult sendMobileCode(@PathVariable("type")String type,@PathVariable("phone")String phone){
-        return userService.sendMobileCode(type,phone);
+        try {
+            return userService.sendMobileCode(type,phone);
+        } catch (Exception e) {
+            e.printStackTrace();
+            return AjaxResult.me().setMsg(e.getMessage());
+        }
     }
 
     /**
@@ -108,6 +114,24 @@ public class LoginAndRegisterController {
      **/
     @PostMapping("/userLogin")
     public AjaxResult userLogin(@RequestBody UserDto userDto){
+        return userService.userLogin(userDto);
+    }
+
+    /**
+     * @Author Mr.Li
+     * @Description 手机验证码登录
+     * @Date 2021/1/14 19:00
+     * @Param [userDto]
+     * @return top.lmqstudy.basic.util.AjaxResult
+     **/
+    @PostMapping("/phoneLogin")
+    public AjaxResult phoneLogin(@RequestBody UserDto userDto){
+        System.out.println(userDto);
+        return userService.userLogin(userDto);
+    }
+
+    @PostMapping("/adminLogin")
+    public AjaxResult adminLogin(@RequestBody UserDto userDto){
         return userService.userLogin(userDto);
     }
 }

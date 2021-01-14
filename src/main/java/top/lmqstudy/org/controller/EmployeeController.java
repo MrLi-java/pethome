@@ -54,12 +54,6 @@ public class EmployeeController {
         }
     }
 
-    @GetMapping
-    @ApiOperation(value = "查询所有员工",notes = "不需要任何参数")
-    public List<Employee> getAll(){
-        return employeeService.getAll();
-    }
-
     @PostMapping
     @ApiOperation(value = "分页查询和高级查询",notes = "需要前台页面传入分页的条件和高级查询的条件")
     public PageList<Employee> queryPage(@RequestBody EmployeeQuery query){

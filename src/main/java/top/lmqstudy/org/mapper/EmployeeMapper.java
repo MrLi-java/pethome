@@ -10,4 +10,5 @@ import top.lmqstudy.org.domain.Employee;
 public interface EmployeeMapper extends BaseMapper<Employee> {
 
 
+    Employee findByAccount(String username);
 }

@@ -49,6 +49,9 @@
         <include refid="condition"/>
         LIMIT #{start},#{pageSize}
     </select>
+    <select id="findByAccount" resultType="top.lmqstudy.org.domain.Employee">
+        select * from t_employee where username=#{username} or email=#{username} or phone=#{username}
+    </select>
 
 
     <resultMap id="EmployeeMap" type="Employee">

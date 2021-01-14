@@ -105,7 +105,7 @@ public class ShopServiceImpl extends BaseServiceImpl<Shop> implements IShopServi
                 //发送激活邮件
                 String content2 = "<h2 style='color:red;'>恭喜你成功入驻宠物之家平台！</h2><br/><br/>"
                         + "点击以下链接即可激活！<br/><br/>" +
-                        "<a href='http://172.16.80.252:8081/lr/shopRegActive/"+id+"'>点击激活</a>";
+                        "<a href='http://172.16.80.252:8080/lr/shopRegActive/"+id+"'>点击激活</a>";
                 mailUtils.send(admin3.getEmail(),"入驻激活",content2);
                 System.out.println(shop.getName() + "的审核操作完成！");
                 break;
