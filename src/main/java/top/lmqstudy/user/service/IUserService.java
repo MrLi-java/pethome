@@ -3,7 +3,9 @@ package top.lmqstudy.user.service;
 import top.lmqstudy.basic.service.IBaseService;
 import top.lmqstudy.basic.util.AjaxResult;
 import top.lmqstudy.user.domain.User;
+import top.lmqstudy.user.domain.dto.AccessTokenDto;
 import top.lmqstudy.user.domain.dto.UserDto;
+import top.lmqstudy.user.domain.dto.UserinfoDto;
 
 /**
  * Created with IntelliJ IDEA.
@@ -52,4 +54,30 @@ public interface IUserService extends IBaseService<User> {
      **/
     AjaxResult userLogin(UserDto userDto);
 
+    /**
+     * @Author Mr.Li
+     * @Description 微信登录接口：获取code参数，利用Java程序发送Http请求获取access_token
+     * @Date 2021/1/15 16:47
+     * @Param [code]
+     * @return top.lmqstudy.basic.util.AjaxResult
+     **/
+    AjaxResult wechatLogin(String code);
+
+    /**
+     * @Author Mr.Li
+     * @Description 微信登录绑定
+     * @Date 2021/1/15 19:16
+     * @Param [userinfoDto]
+     * @return top.lmqstudy.basic.util.AjaxResult
+     **/
+    AjaxResult userBind(UserDto userDto);
+
+    /**
+     * @Author Mr.Li
+     * @Description 前台用户退出
+     * @Date 2021/1/15 21:15
+     * @Param [userDto]
+     * @return top.lmqstudy.basic.util.AjaxResult
+     **/
+    AjaxResult logout(UserDto userDto);
 }

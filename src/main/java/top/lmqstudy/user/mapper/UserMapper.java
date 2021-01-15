@@ -29,4 +29,13 @@ public interface UserMapper extends BaseMapper<User> {
      * @return void
      **/
     User findByAccount(String username);
+
+    /**
+     * @Author Mr.Li
+     * @Description 通过id查找user
+     * @Date 2021/1/15 20:01
+     * @Param [user_id]
+     * @return top.lmqstudy.user.domain.User
+     **/
+    User findById(Long user_id);
 }

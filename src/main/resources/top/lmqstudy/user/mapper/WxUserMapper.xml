@@ -1,0 +1,37 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="top.lmqstudy.user.mapper.WxUserMapper">
+    <select id="findByOpenidAndUnionid" resultMap="WxUserMap">
+        select w.*,u.username,u.state,u.phone,u.email,u.createtime,u.headImg,u.state from t_wxuser w
+        left join t_user u on w.user_id = u.id
+        where w.openid=#{openid} and w.unionid=#{unionid}
+    </select>
+    <resultMap id="WxUserMap" type="WxUser">
+        <id column="id" property="id"/>
+        <result column="openid" property="openid"/>
+        <result column="nickname" property="nickname"/>
+        <result column="sex" property="sex"/>
+        <result column="address" property="address"/>
+        <result column="headimgurl" property="headimgurl"/>
+        <result column="unionid" property="unionid"/>
+        <result column="user_id" property="user_id"/>
+        <association property="user" javaType="User">
+            <id column="id" property="id"/>
+            <result column="username" property="username"/>
+            <result column="email" property="email"/>
+            <result column="phone" property="phone"/>
+            <result column="salt" property="salt"/>
+            <result column="password" property="password"/>
+            <result column="state" property="state"/>
+            <result column="age" property="age"/>
+            <result column="createtime" property="createtime"/>
+            <result column="headImg" property="headImg"/>
+            <result column="logininfo_id" property="logininfo_id"/>
+        </association>
+    </resultMap>
+
+    <insert id="save">
+        insert into t_wxuser(openid, nickname, sex, address, headimgurl, unionid, user_id) values
+        (#{openid},#{nickname},#{sex},#{address},#{headimgurl},#{unionid},#{user_id})
+    </insert>
+</mapper>

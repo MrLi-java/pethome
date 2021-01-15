@@ -8,7 +8,11 @@
         select * from t_user where username=#{username} or phone=#{username} or email=#{username}
     </select>
 
-    <insert id="save">
+    <select id="findById" resultType="top.lmqstudy.user.domain.User">
+        select * from t_user where id=#{user_id}
+    </select>
+
+    <insert id="save" useGeneratedKeys="true" keyProperty="id" keyColumn="id">
         INSERT INTO t_user(username, email, phone, salt, password, state, age, createtime, headImg, logininfo_id) VALUES
         (#{username},#{email},#{phone},#{salt},#{password},#{state},#{age},#{createtime},#{headImg},#{logininfo_id})
     </insert>

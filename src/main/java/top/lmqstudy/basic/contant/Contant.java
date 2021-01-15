@@ -38,6 +38,12 @@ public class Contant {
      */
     public static final String ADMIN = "admin";
 
+    /*
+    前台用户退出
+     */
+    public static final String USER_LOGOUT = "user_logout";
+
+
 
     /*
     登录用户存储在Redis的过期时间
@@ -65,6 +71,28 @@ public class Contant {
      */
     public static final Integer STATE_DISABLED = -1;
 
+    /**
+     * 微信登录相关常量：通过code获取access_token的url
+     */
+    public static final String ACCESS_TOKEN_URL = "https://api.weixin.qq.com/sns/oauth2/access_token?appid=APPID&secret=SECRET&code=CODE&grant_type=authorization_code";
+    public static final String WECHAT_USERINFO_URL = "https://api.weixin.qq.com/sns/userinfo?access_token=ACCESS_TOKEN&openid=OPENID";
+    /**
+     * APPID
+     */
+    public static final String APPID = "wxd853562a0548a7d0";
+    /**
+     * 密钥
+     */
+    public static final String APPSECRET = "4a5d5615f93f24bdba2ba8534642dbb6";
+
+    /*
+    微信登录账户绑定
+     */
+    public static final String BIND_ACCOUNT = "bind_account";
+    /*
+    微信登陆手机绑定
+     */
+    public static final String BIND_PHONE = "bind_phone";
 
 
 }

@@ -16,5 +16,14 @@ public class UserDto extends User {
     private String verifyCode;
     private String type;
 
+    private String access_token;
+
+    private String openid;
+
+    private String userToken;
+
+
     private boolean rememberMe;
+
+
 }

@@ -22,6 +22,8 @@ public class GlobalCorsConfig {
         config.addAllowedOrigin("http://172.16.80.252:8081");
         config.addAllowedOrigin("http://172.16.80.252:8080");
 
+        config.addAllowedOrigin("http://bugtracker.itsource.cn");
+
 
         //2) 是否发送Cookie信息
         config.setAllowCredentials(true);
