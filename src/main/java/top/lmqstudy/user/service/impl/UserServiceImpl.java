@@ -9,7 +9,9 @@ import top.lmqstudy.basic.contant.Contant;
 import top.lmqstudy.basic.service.impl.BaseServiceImpl;
 import top.lmqstudy.basic.util.*;
 import top.lmqstudy.org.domain.Employee;
+import top.lmqstudy.org.domain.Shop;
 import top.lmqstudy.org.mapper.EmployeeMapper;
+import top.lmqstudy.org.mapper.ShopMapper;
 import top.lmqstudy.user.domain.User;
 import top.lmqstudy.user.domain.WxUser;
 import top.lmqstudy.user.domain.dto.AccessTokenDto;
@@ -19,6 +21,7 @@ import top.lmqstudy.user.mapper.UserMapper;
 import top.lmqstudy.user.mapper.WxUserMapper;
 import top.lmqstudy.user.service.IUserService;
 
+import javax.servlet.http.HttpServletRequest;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.UUID;
@@ -41,6 +44,9 @@ public class UserServiceImpl extends BaseServiceImpl<User> implements IUserServi
 
     @Autowired
     private WxUserMapper wxUserMapper;
+
+    @Autowired
+    private ShopMapper shopMapper;
 
 
     /**
@@ -187,6 +193,10 @@ public class UserServiceImpl extends BaseServiceImpl<User> implements IUserServi
                 if(loginUser.getPassword().equals(MD5Utils.encrypByMd5(userDto.getPassword()+loginUser.getSalt()))){
                     //将密码设为空，避免被破译
                     loginUser.setPassword(null);
+                    //通过shop_id查找shop
+                    Shop shop = shopMapper.loadById(loginUser.getShop_id());
+
+                    loginUser.setHeadImg(shop.getLogo());
                     //利用UUID生成一个userToken
                     String userToken = UUID.randomUUID().toString();
                     //将loginUser对象转换为json字符串
@@ -283,6 +293,7 @@ public class UserServiceImpl extends BaseServiceImpl<User> implements IUserServi
      * @return top.lmqstudy.basic.util.AjaxResult
      **/
     @Override
+    @Transactional
     public AjaxResult userBind(UserDto userDto) {
         String userinfoUrl = Contant.WECHAT_USERINFO_URL.replace("ACCESS_TOKEN", userDto.getAccess_token()).replace("OPENID", userDto.getOpenid());
         String result = HttpUtil.get(userinfoUrl);
@@ -373,10 +384,16 @@ public class UserServiceImpl extends BaseServiceImpl<User> implements IUserServi
      * @return top.lmqstudy.basic.util.AjaxResult
      **/
     @Override
-    public AjaxResult logout(UserDto userDto) {
+    @Transactional
+    public AjaxResult logout(UserDto userDto, HttpServletRequest request) {
         if(Contant.USER_LOGOUT.equals(userDto.getType())){
             RedisUtils.INSTANCE.del(userDto.getUserToken());
             return AjaxResult.me();
+        }else if (Contant.ADMIN_LOGOUT.equals(userDto.getType())){
+            Employee user = RedisUtils.INSTANCE.getUser(request, Employee.class);
+            if(user!=null){
+                RedisUtils.INSTANCE.del(request.getHeader(Contant.TOKEN_REQUST_HEADER));
+            }
         }
         return AjaxResult.me().setMsg("退出失败！！");
     }

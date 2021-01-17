@@ -7,6 +7,8 @@ import top.lmqstudy.user.domain.dto.AccessTokenDto;
 import top.lmqstudy.user.domain.dto.UserDto;
 import top.lmqstudy.user.domain.dto.UserinfoDto;
 
+import javax.servlet.http.HttpServletRequest;
+
 /**
  * Created with IntelliJ IDEA.
  *
@@ -79,5 +81,5 @@ public interface IUserService extends IBaseService<User> {
      * @Param [userDto]
      * @return top.lmqstudy.basic.util.AjaxResult
      **/
-    AjaxResult logout(UserDto userDto);
+    AjaxResult logout(UserDto userDto, HttpServletRequest request);
 }

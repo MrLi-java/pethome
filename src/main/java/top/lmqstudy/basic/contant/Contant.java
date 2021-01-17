@@ -43,6 +43,18 @@ public class Contant {
      */
     public static final String USER_LOGOUT = "user_logout";
 
+    /*
+    后台用户退出
+     */
+    public static final String ADMIN_LOGOUT = "admin_logout";
+
+
+
+    public static final String TOKEN_REQUST_HEADER = "userToken";
+
+
+
+
 
 
     /*

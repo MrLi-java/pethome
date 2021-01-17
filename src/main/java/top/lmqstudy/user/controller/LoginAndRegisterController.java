@@ -11,6 +11,7 @@ import top.lmqstudy.user.domain.dto.UserDto;
 import top.lmqstudy.user.domain.dto.UserinfoDto;
 import top.lmqstudy.user.service.IUserService;
 
+import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
 import java.io.PrintWriter;
@@ -128,7 +129,6 @@ public class LoginAndRegisterController {
      **/
     @PostMapping("/phoneLogin")
     public AjaxResult phoneLogin(@RequestBody UserDto userDto) {
-        System.out.println(userDto);
         return userService.userLogin(userDto);
     }
 
@@ -190,7 +190,7 @@ public class LoginAndRegisterController {
      * @return top.lmqstudy.basic.util.AjaxResult
      **/
     @PostMapping("/userLogout")
-    public AjaxResult userLogout(@RequestBody UserDto userDto){
-        return userService.logout(userDto);
+    public AjaxResult userLogout(@RequestBody UserDto userDto, HttpServletRequest request){
+        return userService.logout(userDto,request);
     }
 }

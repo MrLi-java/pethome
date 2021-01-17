@@ -23,6 +23,7 @@ public class Employee extends BaseDomain {
   private Long shop_id;
 
 
+  private String headImg;
 
 
 }

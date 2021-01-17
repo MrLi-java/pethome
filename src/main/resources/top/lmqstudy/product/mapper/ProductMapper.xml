@@ -1,0 +1,90 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="top.lmqstudy.product.mapper.ProductMapper">
+
+    <select id="queryCount" resultType="long">
+        select count(p.id) from t_product p
+        left join t_product_detail pd on p.id = pd.product_id
+        <include refid="condition"/>
+    </select>
+    <select id="queryData" resultMap="ProductMap">
+        select p.*,pd.id pdid,pd.intro,pd.orderNotice from t_product p
+        left join t_product_detail pd on p.id = pd.product_id
+        <include refid="condition"/>
+        order by p.id desc
+        limit #{start},#{pageSize}
+    </select>
+    <resultMap id="ProductMap" type="Product">
+        <id property="id" column="id"/>
+        <result property="name" column="name"/>
+        <result property="resources" column="resources"/>
+        <result property="saleprice" column="saleprice"/>
+        <result property="offsaletime" column="offsaletime"/>
+        <result property="onsaletime" column="onsaletime"/>
+        <result property="state" column="state"/>
+        <result property="costprice" column="costprice"/>
+        <result property="createtime" column="createtime"/>
+        <result property="salecount" column="salecount"/>
+        <result property="shop_id" column="shop_id"/>
+        <association property="productDetail" javaType="ProductDetail">
+            <id property="id" column="pdid"/>
+            <result property="product_id" column="id"/>
+            <result property="intro" column="intro"/>
+            <result property="orderNotice" column="orderNotice"/>
+        </association>
+    </resultMap>
+    <sql id="condition">
+        <where>
+            <if test="keyWord != null and keyWord != ''">
+                and p.name like concat('%',#{keyWord},'%')
+            </if>
+            <if test="shopId != null">
+                and p.shop_id = #{shopId}
+            </if>
+        </where>
+    </sql>
+
+    <!-- 新增:返回主键 -->
+    <insert id="save" useGeneratedKeys="true" keyColumn="id" keyProperty="id">
+        INSERT INTO t_product(name, resources, saleprice, offsaletime, onsaletime, state, costprice, createtime, salecount, shop_id) VALUES
+        (#{name},#{resources},#{saleprice},
+         #{offsaletime},#{onsaletime},#{state},
+         #{costprice},#{createtime},#{salecount}, #{shop_id})
+    </insert>
+    <!-- 新增商品详情 -->
+    <insert id="saveProductDetail" parameterType="ProductDetail">
+        INSERT INTO t_product_detail(product_id, intro, orderNotice) VALUES
+            (#{product_id}, #{intro}, #{orderNotice})
+    </insert>
+<!--跟新product表-->
+    <update id="update">
+        update t_product set name=#{name},resources=#{resources},saleprice=#{saleprice},offsaletime=#{offsaletime},onsaletime=#{onsaletime},state=#{state},costprice=#{costprice},createtime=#{createtime},salecount=#{salecount},shop_id=#{shop_id} where id=#{id}
+    </update>
+<!--    跟新productDeteil表-->
+    <update id="updateProductDetail">
+        update t_product_detail set intro=#{intro},orderNotice=#{orderNotice} where product_id = #{product_id}
+    </update>
+
+
+    <delete id="remove">
+        delete from t_product where id = #{id}
+    </delete>
+
+    <delete id="removeProductDetail">
+        delete from t_product_detail where product_id=#{id}
+    </delete>
+<!--批量上架-->
+    <update id="onsale">
+        update t_product set onsaletime = #{onsaletime} ,offsaletime=#{offsaletime}, state = 0 where id in
+        <foreach collection="ids" item="id" open="(" close=")" separator=",">
+            #{id}
+        </foreach>
+    </update>
+    <!--商品批量下架-->
+    <update id="offsale">
+        update t_product set offsaletime=#{offsaletime}, state = -1 where id in
+        <foreach collection="ids" item="id" open="(" close=")" separator=",">
+            #{id}
+        </foreach>
+    </update>
+</mapper>

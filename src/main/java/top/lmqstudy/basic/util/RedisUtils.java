@@ -1,9 +1,12 @@
 package top.lmqstudy.basic.util;
 
+import org.springframework.util.StringUtils;
 import redis.clients.jedis.Jedis;
 import redis.clients.jedis.JedisPool;
 import redis.clients.jedis.JedisPoolConfig;
+import top.lmqstudy.basic.contant.Contant;
 
+import javax.servlet.http.HttpServletRequest;
 import java.io.IOException;
 import java.util.Properties;
 
@@ -128,5 +131,17 @@ public enum RedisUtils {
         Jedis jedis = getSource();
         jedis.setex(key,time,value);
         closeSource(jedis);
+    }
+
+    public <T> T getUser(HttpServletRequest request, Class<T> clz){
+        Jedis jedis = getSource();
+        //获取userToken请求头
+        String userToken = request.getHeader(Contant.TOKEN_REQUST_HEADER);
+        if(StringUtils.isEmpty(userToken)){
+            return null;
+        }
+        String jsonStr = jedis.get(userToken);
+        T t = JsonUtils.toObject(jsonStr, clz);
+        return t;
     }
 }
