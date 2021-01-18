@@ -170,6 +170,7 @@ public class UserServiceImpl extends BaseServiceImpl<User> implements IUserServi
                 if(loginUser.getPassword().equals(MD5Utils.encrypByMd5(userDto.getPassword()+loginUser.getSalt()))){
                     //将密码设为空，避免被破译
                     loginUser.setPassword(null);
+
                     //利用UUID生成一个userToken
                     String userToken = UUID.randomUUID().toString();
                     //将loginUser对象转换为json字符串
