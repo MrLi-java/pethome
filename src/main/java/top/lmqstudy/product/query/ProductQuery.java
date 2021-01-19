@@ -17,5 +17,6 @@ import top.lmqstudy.basic.query.BaseQuery;
 @ToString(callSuper = true)
 public class ProductQuery extends BaseQuery {
     private Long shopId;
+    private Integer state;
 
 }

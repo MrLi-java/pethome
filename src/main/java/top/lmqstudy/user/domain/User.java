@@ -1,11 +1,13 @@
 package top.lmqstudy.user.domain;
 
 import lombok.Data;
+import lombok.ToString;
 import top.lmqstudy.basic.domain.BaseDomain;
 
 import java.util.Date;
 
 @Data
+@ToString(callSuper = true)
 public class User extends BaseDomain {
 
   private String username;

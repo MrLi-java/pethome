@@ -2,11 +2,18 @@
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
 <mapper namespace="top.lmqstudy.product.mapper.ProductMapper">
 
+    <select id="loadById" resultMap="ProductMap">
+        select p.*,pd.id pdid,pd.intro,pd.orderNotice from t_product p
+        left join t_product_detail pd on p.id = pd.product_id
+        where p.id = #{id}
+    </select>
+
     <select id="queryCount" resultType="long">
         select count(p.id) from t_product p
         left join t_product_detail pd on p.id = pd.product_id
         <include refid="condition"/>
     </select>
+
     <select id="queryData" resultMap="ProductMap">
         select p.*,pd.id pdid,pd.intro,pd.orderNotice from t_product p
         left join t_product_detail pd on p.id = pd.product_id
@@ -40,6 +47,9 @@
             </if>
             <if test="shopId != null">
                 and p.shop_id = #{shopId}
+            </if>
+            <if test="state != null">
+                and p.state = #{state}
             </if>
         </where>
     </sql>

@@ -43,7 +43,6 @@ public class ProductServiceImpl extends BaseServiceImpl<Product> implements IPro
      **/
     @Override
     public PageList<Product> queryDataByShopId(ProductQuery query, HttpServletRequest request) {
-//        System.out.println(query);
         //根据userToken获取redis存储的登录用户信息
         String userToken = request.getHeader("userToken");
         String jsonStr = RedisUtils.INSTANCE.get(userToken);
