@@ -1,11 +1,15 @@
 <?xml version="1.0" encoding="UTF-8" ?>
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
 <mapper namespace="top.lmqstudy.pet.mapper.PetMapper">
-    <insert id="save">
+    <insert id="save" useGeneratedKeys="true" keyColumn="id" keyProperty="id">
         insert into t_pet(name, saleprice, costprice, resources, state, type_id, offsaletime, onsaletime, createtime, shop_id, user_id, adopt_id) VALUES
         (#{name},#{saleprice},#{costprice},#{resources},
          #{state},#{type_id},#{offsaletime},#{onsaletime},
          #{createtime},#{shop_id},#{user_id},#{adopt_id})
+    </insert>
+
+    <insert id="savePetDetail">
+      insert into t_pet_detail(pet_id, adoptNotice, intro) VALUES (#{pet_id},#{adoptNotice},#{intro})
     </insert>
 
     <update id="update">
@@ -14,19 +18,37 @@
                         where id = #{id}
     </update>
 
+    <select id="loadById" resultMap="PetMap">
+        select p.*,sdd.id coat_color_id,sdd.name coat_color_name,pt.id ptid,pt.name ptname,s.id sid,s.name sname,u.id uid,u.username,u.phone, tpd.id tpdid,tpd.intro,tpd.adoptNotice from t_pet p
+     left join t_search_master_msg smm on smm.id = p.adopt_id
+     left join t_systemdictionarydetail sdd on smm.coat_color = sdd.id
+     left join t_pet_type pt on p.type_id = pt.id
+     left join t_shop s on p.shop_id = s.id
+     left join t_user u on p.user_id = u.id
+     left join t_pet_detail tpd on p.id = tpd.pet_id
+    where p.id = #{id}
+    </select>
+
 
     <select id="queryCount" resultType="long">
         select count(*) from t_pet p
+        left join t_search_master_msg smm on smm.id = p.adopt_id
+        left join t_systemdictionarydetail sdd on smm.coat_color = sdd.id
+        left join t_pet_type pt on p.type_id = pt.id
         left join t_shop s on p.shop_id = s.id
         left join t_user u on p.user_id = u.id
+        left join t_pet_detail tpd on p.id = tpd.pet_id
         <include refid="condition"/>
 
     </select>
     <select id="queryData" resultMap="PetMap">
-        select p.*,pt.id ptid,pt.name ptname,s.id sid,s.name sname,u.id uid,u.username from t_pet p
+        select p.*,sdd.id coat_color_id,sdd.name coat_color_name,pt.id ptid,pt.name ptname,s.id sid,s.name sname,u.id uid,u.username,u.phone, tpd.id tpdid,tpd.intro,tpd.adoptNotice from t_pet p
+        left join t_search_master_msg smm on smm.id = p.adopt_id
+        left join t_systemdictionarydetail sdd on smm.coat_color = sdd.id
         left join t_pet_type pt on p.type_id = pt.id
         left join t_shop s on p.shop_id = s.id
         left join t_user u on p.user_id = u.id
+        left join t_pet_detail tpd on p.id = tpd.pet_id
         <include refid="condition"/>
         order by id desc
         limit #{start},#{pageSize}
@@ -57,6 +79,15 @@
             <id column="uid" property="id"/>
             <result column="username" property="username"/>
         </association>
+        <association property="coatColor" javaType="SystemDictionaryDetail">
+            <id column="coat_color_id" property="id"/>
+            <result column="coat_color_name" property="name"/>
+        </association>
+        <association property="petDetail" javaType="PetDetail">
+            <id column="tpdid" property="id"/>
+            <result column="intro" property="intro"/>
+            <result column="adoptNotice" property="adoptNotice"/>
+        </association>
     </resultMap>
 
 
@@ -68,6 +99,9 @@
             </if>
             <if test="shop_id != null">
                 and p.shop_id = #{shop_id}
+            </if>
+            <if test="state != null">
+                and p.state = #{state}
             </if>
         </where>
     </sql>

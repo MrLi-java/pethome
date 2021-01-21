@@ -2,6 +2,9 @@ package top.lmqstudy.user.mapper;
 
 import top.lmqstudy.basic.mapper.BaseMapper;
 import top.lmqstudy.user.domain.User;
+import top.lmqstudy.user.domain.UserAddress;
+
+import java.util.List;
 
 /**
  * Created with IntelliJ IDEA.
@@ -38,4 +41,13 @@ public interface UserMapper extends BaseMapper<User> {
      * @return top.lmqstudy.user.domain.User
      **/
     User findById(Long user_id);
+
+    /**
+     * @Author Mr.Li
+     * @Description 通过前台用户id查找地址
+     * @Date 2021/1/21 18:50
+     * @Param [id]
+     * @return java.util.List<top.lmqstudy.user.domain.UserAddress>
+     **/
+    List<UserAddress> loadUserAddressByUserId(Long id);
 }

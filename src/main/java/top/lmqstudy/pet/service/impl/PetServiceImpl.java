@@ -6,6 +6,7 @@ import org.springframework.transaction.annotation.Transactional;
 import top.lmqstudy.basic.service.impl.BaseServiceImpl;
 import top.lmqstudy.pet.domain.Adopt;
 import top.lmqstudy.pet.domain.Pet;
+import top.lmqstudy.pet.domain.PetDetail;
 import top.lmqstudy.pet.mapper.AdoptMapper;
 import top.lmqstudy.pet.mapper.PetMapper;
 import top.lmqstudy.pet.service.IPetService;
@@ -55,6 +56,12 @@ public class PetServiceImpl extends BaseServiceImpl<Pet> implements IPetService 
             pet.setShop_id(adopt.getShop_id());
             pet.setAdopt_id(id);
             petMapper.save(pet);
+
+            PetDetail petDetail = new PetDetail();
+            petDetail.setPet_id(pet.getId());
+            petDetail.setIntro(adopt.getTitle());
+            petDetail.setAdoptNotice("年龄："+adopt.getAge()+",性别："+adopt.getGender());
+            petMapper.savePetDetail(petDetail);
         }else {
 
         }

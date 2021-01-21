@@ -121,5 +121,10 @@ public class PetController {
         }
     }
 
+    @GetMapping("/{id}")
+    public Pet loadById(@PathVariable("id")Long id){
+        return petService.getById(id);
+    }
+
 
 }

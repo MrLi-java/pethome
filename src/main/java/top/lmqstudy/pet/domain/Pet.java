@@ -4,6 +4,7 @@ package top.lmqstudy.pet.domain;
 import com.fasterxml.jackson.annotation.JsonFormat;
 import lombok.Data;
 import top.lmqstudy.org.domain.Shop;
+import top.lmqstudy.org.domain.SystemDictionaryDetail;
 import top.lmqstudy.user.domain.User;
 
 import java.math.BigDecimal;
@@ -27,6 +28,9 @@ public class Pet {
     private Long type_id;
     private PetType petType;
 
+
+    private SystemDictionaryDetail coatColor;
+
     @JsonFormat(pattern = "yyyy-MM-dd", timezone = "GMT+8")
     private Date offsaletime;
     @JsonFormat(pattern = "yyyy-MM-dd", timezone = "GMT+8")
@@ -40,4 +44,6 @@ public class Pet {
     private User user;
 
     private Long adopt_id;
+
+    private PetDetail petDetail;
 }

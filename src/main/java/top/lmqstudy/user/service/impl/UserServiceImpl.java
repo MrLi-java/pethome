@@ -13,6 +13,7 @@ import top.lmqstudy.org.domain.Shop;
 import top.lmqstudy.org.mapper.EmployeeMapper;
 import top.lmqstudy.org.mapper.ShopMapper;
 import top.lmqstudy.user.domain.User;
+import top.lmqstudy.user.domain.UserAddress;
 import top.lmqstudy.user.domain.WxUser;
 import top.lmqstudy.user.domain.dto.AccessTokenDto;
 import top.lmqstudy.user.domain.dto.UserDto;
@@ -23,6 +24,7 @@ import top.lmqstudy.user.service.IUserService;
 
 import javax.servlet.http.HttpServletRequest;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 import java.util.UUID;
 
@@ -397,6 +399,18 @@ public class UserServiceImpl extends BaseServiceImpl<User> implements IUserServi
             }
         }
         return AjaxResult.me().setMsg("退出失败！！");
+    }
+
+    /**
+     * @Author Mr.Li
+     * @Description 通过前台用户id查找地址
+     * @Date 2021/1/21 18:50
+     * @Param [id]
+     * @return java.util.List<top.lmqstudy.user.domain.UserAddress>
+     **/
+    @Override
+    public List<UserAddress> loadUserAddressByUserId(Long id) {
+        return userMapper.loadUserAddressByUserId(id);
     }
 
 }

@@ -3,11 +3,13 @@ package top.lmqstudy.user.service;
 import top.lmqstudy.basic.service.IBaseService;
 import top.lmqstudy.basic.util.AjaxResult;
 import top.lmqstudy.user.domain.User;
+import top.lmqstudy.user.domain.UserAddress;
 import top.lmqstudy.user.domain.dto.AccessTokenDto;
 import top.lmqstudy.user.domain.dto.UserDto;
 import top.lmqstudy.user.domain.dto.UserinfoDto;
 
 import javax.servlet.http.HttpServletRequest;
+import java.util.List;
 
 /**
  * Created with IntelliJ IDEA.
@@ -82,4 +84,13 @@ public interface IUserService extends IBaseService<User> {
      * @return top.lmqstudy.basic.util.AjaxResult
      **/
     AjaxResult logout(UserDto userDto, HttpServletRequest request);
+
+    /**
+     * @Author Mr.Li
+     * @Description 通过前台用户id查找地址
+     * @Date 2021/1/21 18:50
+     * @Param [id]
+     * @return java.util.List<top.lmqstudy.user.domain.UserAddress>
+     **/
+    List<UserAddress> loadUserAddressByUserId(Long id);
 }

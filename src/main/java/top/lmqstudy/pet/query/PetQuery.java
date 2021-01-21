@@ -1,5 +1,6 @@
 package top.lmqstudy.pet.query;
 
+import io.swagger.models.auth.In;
 import lombok.Data;
 import top.lmqstudy.basic.query.BaseQuery;
 
@@ -13,4 +14,5 @@ import top.lmqstudy.basic.query.BaseQuery;
 @Data
 public class PetQuery extends BaseQuery {
     private Long shop_id;
+    private Integer state;
 }

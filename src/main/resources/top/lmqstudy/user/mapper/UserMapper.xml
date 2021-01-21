@@ -11,6 +11,10 @@
     <select id="findById" resultType="top.lmqstudy.user.domain.User">
         select * from t_user where id=#{user_id}
     </select>
+    <!--通过前台用户id查找地址-->
+    <select id="loadUserAddressByUserId" resultType="UserAddress">
+        select * from t_user_address where user_id = #{id}
+    </select>
 
     <insert id="save" useGeneratedKeys="true" keyProperty="id" keyColumn="id">
         INSERT INTO t_user(username, email, phone, salt, password, state, age, createtime, headImg, logininfo_id) VALUES

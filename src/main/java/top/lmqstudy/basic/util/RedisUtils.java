@@ -142,6 +142,7 @@ public enum RedisUtils {
         }
         String jsonStr = jedis.get(userToken);
         T t = JsonUtils.toObject(jsonStr, clz);
+        closeSource(jedis);
         return t;
     }
 }
