@@ -11,7 +11,8 @@ mybatis:
                         top.lmqstudy.order.domain,top.lmqstudy.order.query,
                         top.lmqstudy.user.domain,top.lmqstudy.user.query,
                         top.lmqstudy.basic.domain,top.lmqstudy.basic.query,
-                        top.lmqstudy.product.domain,top.lmqstudy.product.query
+                        top.lmqstudy.product.domain,top.lmqstudy.product.query,
+                        top.lmqstudy.pet.domain,top.lmqstudy.pet.query,
 logging:
   level:
     top:

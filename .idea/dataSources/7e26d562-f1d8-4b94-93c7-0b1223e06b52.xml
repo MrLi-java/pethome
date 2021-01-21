@@ -2114,7 +2114,7 @@ role_id</ColNames>
       <Comment>如果被领养为领养用户id</Comment>
       <DataType>bigint(20)|0s</DataType>
     </column>
-    <column id="556" parent="310" name="search_master_msg_id">
+    <column id="556" parent="310" name="adopt_id">
       <Position>13</Position>
       <DataType>bigint(20)|0s</DataType>
       <NotNull>1</NotNull>
@@ -2383,7 +2383,7 @@ permission_id</ColNames>
     <column id="609" parent="318" name="coat_color">
       <Position>5</Position>
       <Comment>毛色</Comment>
-      <DataType>varchar(255)|0s</DataType>
+      <DataType>bigint(20)|0s</DataType>
     </column>
     <column id="610" parent="318" name="resources">
       <Position>6</Position>

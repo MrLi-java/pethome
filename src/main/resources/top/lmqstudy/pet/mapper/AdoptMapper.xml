@@ -1,0 +1,87 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="top.lmqstudy.pet.mapper.AdoptMapper">
+    <insert id="save">
+        insert into t_search_master_msg (name, age, gender, coat_color, resources, pet_type, price, address, state, title, user_id, shop_id) VALUES
+        (#{name},#{age},#{gender},#{coat_color},#{resources},#{pet_type},
+         #{price},#{address},#{state},#{title},#{user_id},#{shop_id})
+    </insert>
+
+    <select id="queryCount" resultType="Long">
+        select count(*) from t_search_master_msg smm
+        left join t_systemdictionarydetail sdd on smm.coat_color = sdd.id
+        left join t_pet_type pt on smm.pet_type = pt.id
+        left join t_user u on smm.user_id = u.id
+        <include refid="condition"/>
+    </select>
+
+    <select id="queryData" resultMap="AdoptMap">
+        select smm.*,
+        sdd.id coat_color_id, sdd.name coat_color_name,
+        pt.id pet_type_id, pt.name pet_type_name,
+        u.username, u.phone from t_search_master_msg smm
+        left join t_systemdictionarydetail sdd on smm.coat_color = sdd.id
+        left join t_pet_type pt on smm.pet_type = pt.id
+        left join t_user u on smm.user_id = u.id
+
+        <include refid="condition"/>
+        order by id desc
+        limit #{start},#{pageSize}
+    </select>
+    <resultMap id="AdoptMap" type="Adopt">
+        <id column="id" property="id"/>
+        <result column="title" property="title"/>
+        <result column="name" property="name"/>
+        <result column="age" property="age"/>
+        <result column="gender" property="gender"/>
+        <result column="address" property="address"/>
+        <result column="price" property="price"/>
+        <result column="resources" property="resources"/>
+        <result column="user_id" property="user_id"/>
+        <result column="shop_id" property="shop_id"/>
+        <result column="state" property="state"/>
+        <association property="coatColor" javaType="SystemDictionaryDetail">
+            <id column="coat_color_id" property="id"/>
+            <result column="coat_color_name" property="name"/>
+        </association>
+        <association property="petType" javaType="PetType">
+            <id column="pet_type_id" property="id"/>
+            <result column="pet_type_name" property="name"/>
+        </association>
+        <association property="user" javaType="User">
+            <id column="user_id" property="id"/>
+            <result column="username" property="username"/>
+            <result column="phone" property="phone"/>
+        </association>
+    </resultMap>
+
+
+    <sql id="condition">
+        <where>
+            <if test="keyWord != null and keyWord != ''">
+                and (smm.title like concat('%',#{keyWord},'%') or smm.name like concat('%',#{keyWord},'%'))
+            </if>
+            <if test="shop_id != null">
+                and smm.shop_id = #{shop_id}
+            </if>
+        </where>
+    </sql>
+
+
+    <select id="loadById" resultMap="AdoptMap">
+        select smm.*,
+        sdd.id coat_color_id, sdd.name coat_color_name,
+        pt.id pet_type_id, pt.name pet_type_name,
+        u.username, u.phone from t_search_master_msg smm
+        left join t_systemdictionarydetail sdd on smm.coat_color = sdd.id
+        left join t_pet_type pt on smm.pet_type = pt.id
+        left join t_user u on smm.user_id = u.id
+        where smm.id = #{id}
+    </select>
+
+    <update id="update">
+        update t_search_master_msg set name=#{name}, age=#{age}, gender=#{gender}, coat_color=#{coatColor.id}, resources=#{resources},
+                                       pet_type=#{petType.id}, price=#{price}, address=#{address}, state=#{state},
+                                       title=#{title}, user_id=#{user_id}, shop_id=#{shop_id} where id = #{id}
+    </update>
+</mapper>

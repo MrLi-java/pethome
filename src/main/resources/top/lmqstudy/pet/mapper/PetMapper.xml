@@ -1,0 +1,92 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="top.lmqstudy.pet.mapper.PetMapper">
+    <insert id="save">
+        insert into t_pet(name, saleprice, costprice, resources, state, type_id, offsaletime, onsaletime, createtime, shop_id, user_id, adopt_id) VALUES
+        (#{name},#{saleprice},#{costprice},#{resources},
+         #{state},#{type_id},#{offsaletime},#{onsaletime},
+         #{createtime},#{shop_id},#{user_id},#{adopt_id})
+    </insert>
+
+    <update id="update">
+        update t_pet set name=#{name}, saleprice=#{saleprice}, costprice=#{costprice}, resources=#{resources}, state=#{state}, type_id=#{type_id},
+                         offsaletime=#{offsaletime}, onsaletime=#{onsaletime}, createtime=#{createtime}, shop_id=#{shop_id}, user_id=#{user_id}, adopt_id=#{adopt_id}
+                        where id = #{id}
+    </update>
+
+
+    <select id="queryCount" resultType="long">
+        select count(*) from t_pet p
+        left join t_shop s on p.shop_id = s.id
+        left join t_user u on p.user_id = u.id
+        <include refid="condition"/>
+
+    </select>
+    <select id="queryData" resultMap="PetMap">
+        select p.*,pt.id ptid,pt.name ptname,s.id sid,s.name sname,u.id uid,u.username from t_pet p
+        left join t_pet_type pt on p.type_id = pt.id
+        left join t_shop s on p.shop_id = s.id
+        left join t_user u on p.user_id = u.id
+        <include refid="condition"/>
+        order by id desc
+        limit #{start},#{pageSize}
+    </select>
+    <resultMap id="PetMap" type="Pet">
+        <id column="id" property="id"/>
+        <result column="name" property="name"/>
+        <result column="saleprice" property="saleprice"/>
+        <result column="costprice" property="costprice"/>
+        <result column="resources" property="resources"/>
+        <result column="state" property="state"/>
+        <result column="type_id" property="type_id"/>
+        <result column="offsaletime" property="offsaletime"/>
+        <result column="onsaletime" property="onsaletime"/>
+        <result column="createtime" property="createtime"/>
+        <result column="shop_id" property="shop_id"/>
+        <result column="user_id" property="user_id"/>
+        <result column="adopt_id" property="adopt_id"/>
+        <association property="petType" javaType="PetType">
+            <id column="ptid" property="id"/>
+            <result column="ptname" property="name"/>
+        </association>
+        <association property="shop" javaType="Shop">
+            <id column="sid" property="id"/>
+            <result column="sname" property="name"/>
+        </association>
+        <association property="user" javaType="User">
+            <id column="uid" property="id"/>
+            <result column="username" property="username"/>
+        </association>
+    </resultMap>
+
+
+
+    <sql id="condition">
+        <where>
+            <if test="keyWord != null and keyWord != ''">
+                and p.name like concat('%',#{keyWord},'%')
+            </if>
+            <if test="shop_id != null">
+                and p.shop_id = #{shop_id}
+            </if>
+        </where>
+    </sql>
+
+    <delete id="remove">
+        delete from t_pet where id = #{id}
+    </delete>
+
+
+    <update id="onsale">
+        update t_pet set onsaletime = #{onsaletime} ,offsaletime=#{offsaletime}, state = 0 where id in
+        <foreach collection="ids" item="id" open="(" close=")" separator=",">
+            #{id}
+        </foreach>
+    </update>
+    <update id="offsale">
+        update t_pet set offsaletime=#{offsaletime}, state = -1 where id in
+        <foreach collection="ids" item="id" open="(" close=")" separator=",">
+            #{id}
+        </foreach>
+    </update>
+</mapper>

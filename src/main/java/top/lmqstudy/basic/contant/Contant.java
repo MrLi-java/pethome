@@ -8,6 +8,12 @@ package top.lmqstudy.basic.contant;
  * @Description: 系统常量字段
  */
 public class Contant {
+
+    /*
+    百度地图开放平台AK
+     */
+    public static final String BAIDU_SERVICE_AK = "gNxcxhf3KoDVUOnLqKOGwxQucttQMT7c";
+
     /*
     前台用户手机注册
      */
