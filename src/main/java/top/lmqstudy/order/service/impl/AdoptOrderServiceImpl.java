@@ -3,13 +3,18 @@ package top.lmqstudy.order.service.impl;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+import top.lmqstudy.basic.contant.Contant;
 import top.lmqstudy.basic.service.impl.BaseServiceImpl;
+import top.lmqstudy.basic.util.AjaxResult;
 import top.lmqstudy.basic.util.CodeGenerateUtils;
 import top.lmqstudy.order.domain.AdoptOrder;
 import top.lmqstudy.order.domain.OrderAddress;
 import top.lmqstudy.order.mapper.AdoptOrderMapper;
 import top.lmqstudy.order.mapper.OrderAddressMapper;
+import top.lmqstudy.pay.mapper.PayBillMapper;
 import top.lmqstudy.order.service.IAdoptOrderService;
+import top.lmqstudy.pay.domain.PayBill;
+import top.lmqstudy.pay.service.IAlipayService;
 import top.lmqstudy.pet.domain.Pet;
 import top.lmqstudy.pet.mapper.PetMapper;
 
@@ -31,6 +36,12 @@ public class AdoptOrderServiceImpl extends BaseServiceImpl<AdoptOrder> implement
     @Autowired
     private PetMapper petMapper;
 
+    @Autowired
+    private PayBillMapper payBillMapper;
+
+    @Autowired
+    private IAlipayService alipayService;
+
     /**
      * @Author Mr.Li
      * @Description 前台用户领养宠物下单
@@ -40,7 +51,7 @@ public class AdoptOrderServiceImpl extends BaseServiceImpl<AdoptOrder> implement
      **/
     @Override
     @Transactional
-    public void orderAdopt(AdoptOrder adoptOrder) {
+    public AjaxResult orderAdopt(AdoptOrder adoptOrder) {
         //利用工具类生成一个随机的订单号
         String orderSn = CodeGenerateUtils.generateOrderSn(adoptOrder.getUser().getId());
         //保存订单的地址
@@ -65,6 +76,25 @@ public class AdoptOrderServiceImpl extends BaseServiceImpl<AdoptOrder> implement
         pet.setState(-1);
         pet.setUser(adoptOrder.getUser());
         petMapper.update(pet);
+
+        //保存账单的信息
+        PayBill payBill = new PayBill();
+        payBill.setDigest(adoptOrder.getDigest());
+        payBill.setMoney(adoptOrder.getPrice());
+        payBill.setLastPayTime(adoptOrder.getLastPayTime());
+        payBill.setPayChannel(adoptOrder.getPayType());
+        payBill.setBusinessType(Contant.BUSINESS_TYPE_ADOPT);
+        payBill.setBusinessKey(adoptOrder.getId());
+        payBill.setUser_id(adoptOrder.getUser().getId());
+        payBill.setNickName(adoptOrder.getUser().getUsername());
+        payBill.setShop_id(adoptOrder.getPet().getShop_id());
+        payBill.setShopName(adoptOrder.getPet().getShop().getName());
+        payBill.setOrderSn(adoptOrder.getOrderSn());
+        payBillMapper.save(payBill);
+
+        String result = alipayService.toPay(adoptOrder);
+
+        return AjaxResult.me().setData(result);
 
     }
 }

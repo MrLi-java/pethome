@@ -11,4 +11,5 @@ import top.lmqstudy.order.domain.OrderAddress;
  * @Description:
  */
 public interface OrderAddressMapper extends BaseMapper<OrderAddress> {
+    OrderAddress getOrderAddress(String orderSn);
 }

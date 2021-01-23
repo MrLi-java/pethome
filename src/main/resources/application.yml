@@ -13,6 +13,7 @@ mybatis:
                         top.lmqstudy.basic.domain,top.lmqstudy.basic.query,
                         top.lmqstudy.product.domain,top.lmqstudy.product.query,
                         top.lmqstudy.pet.domain,top.lmqstudy.pet.query,
+                        top.lmqstudy.pay.domain,top.lmqstudy.pay.query,
 logging:
   level:
     top:

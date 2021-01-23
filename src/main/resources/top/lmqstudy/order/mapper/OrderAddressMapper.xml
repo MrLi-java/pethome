@@ -27,4 +27,7 @@
                                    email=#{email}
         WHERE id = #{id}
     </update>
+    <select id="getOrderAddress" resultType="top.lmqstudy.order.domain.OrderAddress">
+        SELECT * FROM t_order_address WHERE orderSn=#{orderSn}
+    </select>
 </mapper>

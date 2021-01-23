@@ -1,6 +1,7 @@
 package top.lmqstudy.order.service;
 
 import top.lmqstudy.basic.service.IBaseService;
+import top.lmqstudy.basic.util.AjaxResult;
 import top.lmqstudy.order.domain.AdoptOrder;
 
 /**
@@ -18,5 +19,5 @@ public interface IAdoptOrderService extends IBaseService<AdoptOrder> {
      * @Param [adoptOrder]
      * @return void
      **/
-    void orderAdopt(AdoptOrder adoptOrder);
+    AjaxResult orderAdopt(AdoptOrder adoptOrder);
 }

@@ -21,6 +21,6 @@ public class WebConfiguration implements WebMvcConfigurer {
     public void addInterceptors(InterceptorRegistry registry) {
         registry.addInterceptor(loginInterceptor)
                 .addPathPatterns("/**")             //拦截所有请求
-                .excludePathPatterns("/lr/**","/fastdfs/**","/front/**","/util/**","/error"); //放行/lr和/fastdfs下面的所有资源请求
+                .excludePathPatterns("/lr/**","/fastdfs/**","/front/**","/util/**","/error","/alipay/**"); //放行/lr和/fastdfs下面的所有资源请求
     }
 }

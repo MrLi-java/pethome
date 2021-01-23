@@ -44,6 +44,8 @@ public class AdoptOrder {
     private Long address_id;
 
 
+    private Integer payType;
+
     private OrderAddress orderAddress;
 
 }

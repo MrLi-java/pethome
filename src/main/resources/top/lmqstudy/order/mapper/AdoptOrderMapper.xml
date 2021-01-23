@@ -9,4 +9,8 @@
          #{paySn},#{lastPayTime},#{lastConfirmTime},#{pet.id},
          #{user.id},#{shop_id},#{address_id})
     </insert>
+    <update id="updateStateAndPaySn">
+        UPDATE t_order_adopt SET state = 2, paySn = #{paySn}, lastConfirmTime = #{lastConfirmTime}
+        WHERE id = #{id}
+    </update>
 </mapper>

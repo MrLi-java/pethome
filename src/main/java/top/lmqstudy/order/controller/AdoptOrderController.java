@@ -37,8 +37,7 @@ public class AdoptOrderController {
         try {
             User user = RedisUtils.INSTANCE.getUser(request, User.class);
             adoptOrder.setUser(user);
-            adoptOrderService.orderAdopt(adoptOrder);
-            return AjaxResult.me();
+            return adoptOrderService.orderAdopt(adoptOrder);
         } catch (Exception e) {
             e.printStackTrace();
             return AjaxResult.me().setMsg("下单失败，让我去干了那该死的程序员！！");

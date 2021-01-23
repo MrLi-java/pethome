@@ -112,5 +112,16 @@ public class Contant {
      */
     public static final String BIND_PHONE = "bind_phone";
 
+    /*
+    商品订单类型
+     */
+    public static final String BUSINESS_TYPE_PRODUCT = "business_type_product";
+    /*
+   宠物领养订单类型
+    */
+    public static final String BUSINESS_TYPE_ADOPT = "business_type_adopt";
+
+
+
 
 }

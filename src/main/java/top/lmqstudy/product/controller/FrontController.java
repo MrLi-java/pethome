@@ -2,8 +2,9 @@ package top.lmqstudy.product.controller;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
-import top.lmqstudy.basic.util.AjaxResult;
 import top.lmqstudy.basic.util.PageList;
+import top.lmqstudy.order.domain.OrderAddress;
+import top.lmqstudy.order.service.IOrderAddressService;
 import top.lmqstudy.pet.domain.Pet;
 import top.lmqstudy.pet.query.PetQuery;
 import top.lmqstudy.pet.service.IPetService;
@@ -27,6 +28,9 @@ public class FrontController {
     @Autowired
     private IPetService petService;
 
+    @Autowired
+    private IOrderAddressService orderAddressService;
+
     @PostMapping("/product")
     public PageList<Product> queryData(@RequestBody ProductQuery query){
         return productService.queryPage(query);
@@ -46,5 +50,10 @@ public class FrontController {
     @GetMapping("/pet/{id}")
     public Pet getPetById(@PathVariable("id")Long id){
         return petService.getById(id);
+    }
+
+    @GetMapping("/orderAddress/{orderSn}")
+    public OrderAddress getOrderAddress(@PathVariable("orderSn")String orderSn){
+        return orderAddressService.getOrderAddress(orderSn);
     }
 }
